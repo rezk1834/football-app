@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'components/square.dart';
+import 'components/main_square.dart';
 import 'database/database.dart';
 
 class home_screen extends StatelessWidget {
@@ -11,6 +11,10 @@ class home_screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('اختار التحدي', style: TextStyle(fontSize: 40),),
+        centerTitle: true,
+      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -18,17 +22,15 @@ class home_screen extends StatelessWidget {
           image: DecorationImage(
               image: AssetImage("assets/main/wall.jpg"),fit:BoxFit.cover)
         ),
-        child: Expanded(
-          child: ListView.builder(
-              itemCount: main_categories.length,
-              itemBuilder: (context,index ){
-                return square(
-                  child: main_categories[index]['title']!,
-                  pic: main_categories[index]['image']!,
-                  path: main_categories[index]['path']!,
-                );
-              }),
-        ),
+        child: ListView.builder(
+            itemCount: main_categories.length,
+            itemBuilder: (context,index ){
+              return main_square(
+                child: main_categories[index]['title']!,
+                pic: main_categories[index]['image']!,
+                path: main_categories[index]['path']!,
+              );
+            }),
       ),
     );
   }

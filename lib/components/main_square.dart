@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class square extends StatelessWidget {
+class main_square extends StatelessWidget {
   final String child;
   final String pic;
   final String path;
 
-  square({super.key, required this.child, required this.pic, required this.path});
+  main_square({super.key, required this.child, required this.pic, required this.path});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class square extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
-                left: 10,
+                right: 10,
                 bottom: 10,
                 child: Text(
                   child,
