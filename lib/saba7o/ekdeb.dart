@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class ehbed extends StatefulWidget {
+class ekdeb extends StatefulWidget {
   final int redScore;
   final int blueScore;
 
-  ehbed({required this.redScore, required this.blueScore});
+  ekdeb({required this.redScore, required this.blueScore});
 
   @override
-  State<ehbed> createState() => _ehbedState();
+  State<ekdeb> createState() => _ekdebState();
 }
 
-class _ehbedState extends State<ehbed> {
+class _ekdebState extends State<ekdeb> {
   late int redScore;
   late int blueScore;
 
@@ -25,7 +25,7 @@ class _ehbedState extends State<ehbed> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ehbed Page'),
+        title: Text('ekdeb Page'),
       ),
       body: Center(
         child: Column(

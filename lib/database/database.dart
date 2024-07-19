@@ -7,25 +7,25 @@ final List<Map<String, String>> main_categories = [
 
 
 final List<Map<String, String>> saba7o_categories = [
-  {"title": "اهبد صح", "image": "assets/main/saba7o.png", "path": "/ehbed"},
-  {"title": "اكدب صح", "image": "assets/main/saba7o.png", "path": "/ekdeb"},
-  {"title": "روندو", "image": "assets/main/saba7o.png", "path": "/rondo"},
-  {"title": "مين في الصورة", "image": "assets/main/saba7o.png", "path": "/men_fe_elsora"},
-  {"title": "الهمس ", "image": "assets/main/saba7o.png", "path": "/whisper"},
-  {"title": "10 ثواني", "image": "assets/main/saba7o.png", "path": "/seconds"},
-  {"title": "من اللاعب", "image": "assets/main/saba7o.png", "path": "/guess_the_player"},
-  {"title": "باسورد", "image": "assets/main/saba7o.png", "path": "/password"},
-  {"title": "ريسك", "image": "assets/main/saba7o.png", "path": "/risk"},
-  {"title": "لبس صاحبك", "image": "assets/main/saba7o.png", "path": "/labes_sa7bak"},
-  {"title": "مزاد", "image": "assets/main/saba7o.png", "path": "/mazad"},
-  {"title": "التمثيل", "image": "assets/main/saba7o.png", "path": "/acting"},
+  {"title": "اهبد صح", "image": "assets/main/saba7o.png", "path": "/ehbed","rules":"سؤال وكل فريق معاه 30 ثانية علشان يجاوب واللي اجابته اقرب بياخد نقطة ولو حد جاب اجابة صح بياخد نقطتين"},
+  {"title": "اكدب صح", "image": "assets/main/saba7o.png", "path": "/ekdeb","rules":""},
+  {"title": "روندو", "image": "assets/main/saba7o.png", "path": "/rondo","rules":""},
+  {"title": "مين في الصورة", "image": "assets/main/saba7o.png", "path": "/men_fe_elsora","rules":""},
+  {"title": "الهمس ", "image": "assets/main/saba7o.png", "path": "/whisper","rules":""},
+  {"title": "10 ثواني", "image": "assets/main/saba7o.png", "path": "/seconds","rules":""},
+  {"title": "من اللاعب", "image": "assets/main/saba7o.png", "path": "/guess_the_player","rules":""},
+  {"title": "باسورد", "image": "assets/main/saba7o.png", "path": "/password","rules":""},
+  {"title": "ريسك", "image": "assets/main/saba7o.png", "path": "/risk","rules":""},
+  {"title": "لبس صاحبك", "image": "assets/main/saba7o.png", "path": "/labes_sa7bak","rules":""},
+  {"title": "مزاد", "image": "assets/main/saba7o.png", "path": "/mazad","rules":""},
+  {"title": "التمثيل", "image": "assets/main/saba7o.png", "path": "/acting","rules":""},
 ];
 
 
 final List<Map<String, dynamic>> ehbed_data = [
   {"question": "امتي كانت اول مرة الاهلي ياخد الدوري من غير هزيمة؟", "answer": 1976},
   {"question": "كام لاعب جاب 100+ جون في البريميرليج؟", "answer": 34},
-  {"question": "لوكاكو سجل كام جون مع المنتخب؟", "answer": 85},
+  {"question": "هازارد سجل كام جون مع المنتخب؟", "answer": 33},
   {"question": "دينس بيركامب عمل كام اسيست في البريميرليج؟", "answer": 94},
   {"question": "بيتر تشيك عمل كام سيف في الدوري الانجليزي؟", "answer": 1005},
   {"question": "لامبارد جاب كام بلن مع تشيلسي في الدوري الانجليزي؟", "answer": 32},

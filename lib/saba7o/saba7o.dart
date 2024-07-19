@@ -11,8 +11,15 @@ class saba7o extends StatefulWidget {
 }
 
 class _saba7oState extends State<saba7o> {
-  late int _red_score = 0;
-  late int _blue_score = 0;
+  int red_score = 0;
+  int blue_score = 0;
+
+  void updateScores(int newRedScore, int newBlueScore) {
+    setState(() {
+      red_score = newRedScore;
+      blue_score = newBlueScore;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,22 +45,22 @@ class _saba7oState extends State<saba7o> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: 75,
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Center(child: Text(_red_score.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
+                        width: 75,
+                        height: 75,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Center(child: Text(red_score.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
                     ),
                     Container(
-                      width: 75,
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                        child: Center(child: Text(_blue_score.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
+                        width: 75,
+                        height: 75,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Center(child: Text(blue_score.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
                     ),
                   ],
                 ),
@@ -64,11 +71,13 @@ class _saba7oState extends State<saba7o> {
                   itemCount: saba7o_categories.length,
                   itemBuilder: (context, index) {
                     return saba7o_square(
-                      child: saba7o_categories[index]['title']!,
+                      title: saba7o_categories[index]['title']!,
                       pic: saba7o_categories[index]['image']!,
-                      red_score: _red_score,
-                      blue_score: _blue_score,
+                      red_score: red_score,
+                      blue_score: blue_score,
                       path: saba7o_categories[index]['path']!,
+                      updateScores: updateScores,
+                      rules:saba7o_categories[index]['rules']!,
                     );
                   },
                 ),
