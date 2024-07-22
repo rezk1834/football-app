@@ -13,6 +13,8 @@ class ekdeb extends StatefulWidget {
 class _ekdebState extends State<ekdeb> {
   late int redScore;
   late int blueScore;
+  late int gameBlueScore = 0;
+  late int gameRedScore = 0;
 
   @override
   void initState() {
@@ -27,14 +29,37 @@ class _ekdebState extends State<ekdeb> {
       appBar: AppBar(
         title: Text('ekdeb Page'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Red Score: $redScore'),
-            Text('Blue Score: $blueScore'),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    width: 75,
+                    height: 75,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Center(child: Text(gameRedScore.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
+                ),
+                Container(
+                    width: 75,
+                    height: 75,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Center(child: Text(gameBlueScore.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10,),
+        ],
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

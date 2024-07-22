@@ -71,13 +71,13 @@ class _saba7oState extends State<saba7o> {
                   itemCount: saba7o_categories.length,
                   itemBuilder: (context, index) {
                     return saba7o_square(
-                      title: saba7o_categories[index]['title']!,
+                      child: saba7o_categories[index]['title']!,
                       pic: saba7o_categories[index]['image']!,
                       red_score: red_score,
                       blue_score: blue_score,
                       path: saba7o_categories[index]['path']!,
                       updateScores: updateScores,
-                      rules:saba7o_categories[index]['rules']!,
+
                     );
                   },
                 ),

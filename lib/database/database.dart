@@ -8,17 +8,17 @@ final List<Map<String, String>> main_categories = [
 
 final List<Map<String, String>> saba7o_categories = [
   {"title": "اهبد صح", "image": "assets/main/saba7o.png", "path": "/ehbed","rules":"سؤال وكل فريق معاه 30 ثانية علشان يجاوب واللي اجابته اقرب بياخد نقطة ولو حد جاب اجابة صح بياخد نقطتين"},
-  {"title": "اكدب صح", "image": "assets/main/saba7o.png", "path": "/ekdeb","rules":""},
-  {"title": "روندو", "image": "assets/main/saba7o.png", "path": "/rondo","rules":""},
-  {"title": "مين في الصورة", "image": "assets/main/saba7o.png", "path": "/men_fe_elsora","rules":""},
-  {"title": "الهمس ", "image": "assets/main/saba7o.png", "path": "/whisper","rules":""},
-  {"title": "10 ثواني", "image": "assets/main/saba7o.png", "path": "/seconds","rules":""},
-  {"title": "من اللاعب", "image": "assets/main/saba7o.png", "path": "/guess_the_player","rules":""},
-  {"title": "باسورد", "image": "assets/main/saba7o.png", "path": "/password","rules":""},
-  {"title": "ريسك", "image": "assets/main/saba7o.png", "path": "/risk","rules":""},
-  {"title": "لبس صاحبك", "image": "assets/main/saba7o.png", "path": "/labes_sa7bak","rules":""},
-  {"title": "مزاد", "image": "assets/main/saba7o.png", "path": "/mazad","rules":""},
-  {"title": "التمثيل", "image": "assets/main/saba7o.png", "path": "/acting","rules":""},
+  {"title": "اكدب صح", "image": "assets/main/saba7o.png", "path": "/ekdeb","rules":"s"},
+  {"title": "روندو", "image": "assets/main/saba7o.png", "path": "/rondo","rules":"s"},
+  {"title": "مين في الصورة", "image": "assets/main/saba7o.png", "path": "/men_fe_elsora","rules":"sss"},
+  {"title": "الهمس ", "image": "assets/main/saba7o.png", "path": "/whisper","rules":"sssss"},
+  {"title": "10 ثواني", "image": "assets/main/saba7o.png", "path": "/seconds","rules":"ssssss"},
+  {"title": "من اللاعب", "image": "assets/main/saba7o.png", "path": "/guess_the_player","rules":"sssss"},
+  {"title": "باسورد", "image": "assets/main/saba7o.png", "path": "/password","rules":"sssss"},
+  {"title": "ريسك", "image": "assets/main/saba7o.png", "path": "/risk","rules":"sssss"},
+  {"title": "لبس صاحبك", "image": "assets/main/saba7o.png", "path": "/labes_sa7bak","rules":"sssssssss"},
+  {"title": "مزاد", "image": "assets/main/saba7o.png", "path": "/mazad","rules":"sssssss"},
+  {"title": "التمثيل", "image": "assets/main/saba7o.png", "path": "/acting","rules":"sssss"},
 ];
 
 
