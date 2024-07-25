@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../database/database.dart';
 
@@ -15,9 +16,9 @@ class ehbed extends StatefulWidget {
 class _ehbedState extends State<ehbed> {
   late int redScore;
   late int blueScore;
-  late int gameBlueScore = 0;
-  late int gameRedScore = 0;
-  int questionsNumbers = 3; 
+  int gameBlueScore = 0;
+  int gameRedScore = 0;
+  int questionsNumber = 0;
   Random random = Random();
 
   @override
@@ -40,7 +41,7 @@ class _ehbedState extends State<ehbed> {
 
   @override
   Widget build(BuildContext context) {
-    List<int> randomNumbers = generateUniqueRandomNumbers(questionsNumbers, ehbed_data.length);
+    List<int> randomNumbers = generateUniqueRandomNumbers(5, ehbed_data.length);
 
     return Scaffold(
       appBar: AppBar(
@@ -57,91 +58,140 @@ class _ehbedState extends State<ehbed> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: (questionsNumber < 5)
+              ? Column(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Center(
-                        child: Text(
-                          gameRedScore.toString(),
-                          style: TextStyle(color: Colors.white, fontSize: 25),
+                    Column(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(
+                            child: Text(
+                              gameRedScore.toString(),
+                              style: TextStyle(color: Colors.white, fontSize: 25),
+                            ),
+                          ),
                         ),
-                      ),
+                        IconButton(
+                          icon: Icon(Icons.add, color: Colors.red),
+                          onPressed: () {
+                            setState(() {
+                              gameRedScore++;
+                              questionsNumber++;
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                    DropdownButton<int>(
-                      value: questionsNumbers,
-                      items: [3, 5, 7, 9]
-                          .map((int value) => DropdownMenuItem<int>(
-                        value: value,
-                        child: Text(value.toString()),
-                      ))
-                          .toList(),
-                      onChanged: (int? value) {
-                        if (value != null) {
-                          setState(() {
-                            questionsNumbers = value;
-                          });
-                        }
-                      },
+                    Text(
+                      'Question No.${questionsNumber + 1}',
+                      style: TextStyle(fontSize: 20),
                     ),
+                    Column(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(
+                            child: Text(
+                              gameBlueScore.toString(),
+                              style: TextStyle(color: Colors.white, fontSize: 25),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.add, color: Colors.blue),
+                          onPressed: () {
+                            setState(() {
+                              gameBlueScore++;
+                              questionsNumber++;
 
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Center(
-                        child: Text(
-                          gameBlueScore.toString(),
-                          style: TextStyle(color: Colors.white, fontSize: 25),
+                            });
+                          },
                         ),
-                      ),
+                      ],
                     ),
                   ],
+                ),
+              ),
+              SizedBox(height: 30),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.symmetric(vertical: 20),
+                child: Center(
+                  child: Text(
+                    ehbed_data[randomNumbers[questionsNumber]]['question'] as String,
+                    style: TextStyle(fontSize: 40),
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  ehbed_data[randomNumbers[questionsNumber]]['answer'].toString(),
+                  style: TextStyle(fontSize: 40, color: Colors.green),
+                ),
+              ),
+            ],
+          )
+              : Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 125,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  onPressed: () {
+                    setState(() {
+                      redScore++;
+                    });
+                    Navigator.pop(context, [redScore, blueScore]);
+                  },
+                  child: Text('Team Red won', style: TextStyle(color: Colors.white, fontSize: 15)),
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: 125,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.blue,
+                  onPressed: () {
+                    setState(() {
+                      blueScore++;
+                    });
+                    Navigator.pop(context, [redScore, blueScore]);
+                  },
+                  child: Text('Team Blue won', style: TextStyle(color: Colors.white, fontSize: 15)),
                 ),
               ),
             ],
           ),
         ),
-      ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FloatingActionButton(
-            backgroundColor: Colors.red,
-            onPressed: () {
-              setState(() {
-                redScore++;
-              });
-              Navigator.pop(context, [redScore, blueScore]);
-            },
-            child: Icon(Icons.add, color: Colors.white),
-          ),
-          FloatingActionButton(
-            backgroundColor: Colors.blue,
-            onPressed: () {
-              setState(() {
-                blueScore++;
-              });
-              Navigator.pop(context, [redScore, blueScore]);
-            },
-            child: Icon(Icons.add, color: Colors.white),
-          ),
-        ],
       ),
     );
   }

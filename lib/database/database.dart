@@ -1,7 +1,7 @@
 final List<Map<String, String>> main_categories = [
   {"title": "صباحو تحدي", "image": "assets/main/saba7o.png", "path": "/saba7o"},
-  {"title": "أقوي تحدي", "image": "assets/main/Aqua Ta7ady.png", "path": "/aqua"},
   {"title": "تحدي ال30", "image": "assets/main/30 Challenge.png", "path": "/challenge"},
+  {"title": "أقوي تحدي", "image": "assets/main/Aqua Ta7ady.png", "path": "/aqua"},
 ];
 
 
