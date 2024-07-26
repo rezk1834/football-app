@@ -20,12 +20,14 @@ class _EkdebState extends State<Ekdeb> {
   int gameRedScore = 0;
   int questionsNumber = 0;
   Random random = Random();
+  late List<int> randomNumbers;
 
   @override
   void initState() {
     super.initState();
     redScore = widget.redScore;
     blueScore = widget.blueScore;
+    randomNumbers = generateUniqueRandomNumbers(5, Acting_data.length);
   }
 
   List<int> generateUniqueRandomNumbers(int count, int max) {
@@ -39,6 +41,38 @@ class _EkdebState extends State<Ekdeb> {
     return uniqueNumbers.toList();
   }
 
+  void draw() {
+    setState(() {
+      questionsNumber++;
+      _checkGameEnd();
+    });
+  }
+
+  void changeQuestion() {
+    setState(() {
+      _checkGameEnd();
+      randomNumbers[questionsNumber] = random.nextInt(Ekdeb_data.length);
+    });
+  }
+
+  void _checkGameEnd() {
+    if (questionsNumber == 5) {
+      if (gameRedScore > gameBlueScore) {
+        redScore++;
+      } else if (gameRedScore < gameBlueScore) {
+        blueScore++;
+      }
+      Navigator.pop(context, [redScore, blueScore]);
+    }
+    if (gameBlueScore == 3) {
+      blueScore++;
+      Navigator.pop(context, [redScore, blueScore]);
+    }
+    if (gameRedScore == 3) {
+      redScore++;
+      Navigator.pop(context, [redScore, blueScore]);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     List<int> randomNumbers = generateUniqueRandomNumbers(5, Ekdeb_data.length);
@@ -46,6 +80,7 @@ class _EkdebState extends State<Ekdeb> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Ekdeb Page'),
+        centerTitle: true,
       ),
       body: Container(
         width: double.infinity,
@@ -86,12 +121,8 @@ class _EkdebState extends State<Ekdeb> {
                             onPressed: () {
                               setState(() {
                                 gameRedScore++;
-                                if (gameRedScore == 3) {
-                                  redScore++;
-                                  Navigator.pop(context, [redScore, blueScore]);
-                                } else {
-                                  questionsNumber++;
-                                }
+                                questionsNumber++;
+                                _checkGameEnd();
                               });
                             },
                           ),
@@ -122,12 +153,8 @@ class _EkdebState extends State<Ekdeb> {
                             onPressed: () {
                               setState(() {
                                 gameBlueScore++;
-                                if (gameBlueScore == 3) {
-                                  blueScore++;
-                                  Navigator.pop(context, [redScore, blueScore]);
-                                } else {
-                                  questionsNumber++;
-                                }
+                                questionsNumber++;
+                                _checkGameEnd();
                               });
                             },
                           ),
@@ -164,6 +191,27 @@ class _EkdebState extends State<Ekdeb> {
                     Ekdeb_data[randomNumbers[questionsNumber]]['answer'].toString(),
                     style: TextStyle(fontSize: 40, color: Colors.green),
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: draw,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.blueGrey,
+                      ),
+                      child: Text('No Answer'),
+                    ),
+                    ElevatedButton(
+                      onPressed: changeQuestion,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.green,
+                      ),
+                      child: Text('Change the question'),
+                    ),
+                  ],
                 ),
               ],
             )

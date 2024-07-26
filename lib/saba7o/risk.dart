@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../database/database.dart';
 
 class Risk extends StatefulWidget {
@@ -18,31 +18,46 @@ class _RiskState extends State<Risk> {
   late int blueScore;
   int gameBlueScore = 0;
   int gameRedScore = 0;
-  int questionsNumber = 0;
   Random random = Random();
+  late List<Map<String, String>> randomRiskData;
 
   @override
   void initState() {
     super.initState();
     redScore = widget.redScore;
     blueScore = widget.blueScore;
+    randomRiskData = _getRandomRiskData(4);
+    print("Selected Risk data: $randomRiskData");
   }
 
-  List<int> generateUniqueRandomNumbers(int count, int max) {
-    Set<int> uniqueNumbers = Set<int>();
+  List<Map<String, String>> _getRandomRiskData(int count) {
+    List<Map<String, String>> shuffledData = List.from(Risk_data);
+    shuffledData.shuffle(random);
+    return shuffledData.take(count).toList();
+  }
 
-    while (uniqueNumbers.length < count) {
-      int number = random.nextInt(max);
-      uniqueNumbers.add(number);
-    }
-
-    return uniqueNumbers.toList();
+  void _showDialog(String title, String content) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    List<int> randomNumbers = generateUniqueRandomNumbers(5, Risk_data.length);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Risk Page'),
@@ -56,117 +71,109 @@ class _RiskState extends State<Risk> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:  Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                              child: Text(
-                                gameRedScore.toString(),
-                                style: TextStyle(color: Colors.white, fontSize: 25),
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add, color: Colors.red),
-                            onPressed: () {
-                              setState(() {
-                                gameRedScore++;
-                                if (gameRedScore == 3) {
-                                  redScore++;
-                                  Navigator.pop(context, [redScore, blueScore]);
-                                } else {
-                                  questionsNumber++;
-                                }
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Question No.${questionsNumber + 1}',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                              child: Text(
-                                gameBlueScore.toString(),
-                                style: TextStyle(color: Colors.white, fontSize: 25),
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add, color: Colors.blue),
-                            onPressed: () {
-                              setState(() {
-                                gameBlueScore++;
-                                if (gameBlueScore == 3) {
-                                  blueScore++;
-                                  Navigator.pop(context, [redScore, blueScore]);
-                                } else {
-                                  questionsNumber++;
-                                }
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 30),
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  child: Center(
-                    child: Text(
-                      Risk_data[randomNumbers[questionsNumber]]['question'] as String,
-                      style: TextStyle(fontSize: 40),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _scoreContainer(gameRedScore.toString(), Colors.red),
+                  _scoreContainer(gameBlueScore.toString(), Colors.blue),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [5, 10, 20, 40].map((value) {
+                  return ElevatedButton(
+                    onPressed: () => setState(() { gameRedScore += value; }),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.red,
                     ),
+                    child: Text("+$value"),
+                  );
+                }).toList(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [5, 10, 20, 40].map((value) {
+                  return ElevatedButton(
+                    onPressed: () => setState(() { gameBlueScore += value; }),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blue,
+                    ),
+                    child: Text("+$value"),
+                  );
+                }).toList(),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: GridView.builder(
+                  itemCount: 16, // Total items in the grid (4 columns x 4 rows)
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
                   ),
+                  itemBuilder: (context, index) {
+                    // Determine the point value based on the row
+                    final points = [5, 10, 20, 40];
+                    final row = index ~/ 4;
+                    final pointValue = points[row];
+
+                    return GestureDetector(
+                      onTap: () {
+                        // Show dialog with the relevant content
+                        if (index < randomRiskData.length) {
+                          final data = randomRiskData[index];
+                          final question = data['5q'] ?? '';
+                          final answer = data['5a'] ?? '';
+                          _showDialog(data['title'] ?? 'Question', 'Q: $question\nA: $answer');
+                        }
+                      },
+                      child: Container(
+                        color: Colors.grey[600],
+                        child: Center(
+                          child: Text(
+                            pointValue.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  child: Text(
-                    Risk_data[randomNumbers[questionsNumber]]['answer'].toString(),
-                    style: TextStyle(fontSize: 40, color: Colors.green),
-                  ),
-                ),
-              ],
-            )
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _scoreContainer(String title, Color color) {
+    return Container(
+      width: 70,
+      height: 40,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(color: Colors.white, fontSize: 14),
+          textAlign: TextAlign.center,
         ),
       ),
     );

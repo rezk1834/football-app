@@ -20,12 +20,14 @@ class _RondoState extends State<Rondo> {
   int gameRedScore = 0;
   int questionsNumber = 0;
   Random random = Random();
+  late List<int> randomNumbers;
 
   @override
   void initState() {
     super.initState();
     redScore = widget.redScore;
     blueScore = widget.blueScore;
+    randomNumbers = generateUniqueRandomNumbers(8, Acting_data.length);
   }
 
   List<int> generateUniqueRandomNumbers(int count, int max) {
@@ -37,6 +39,31 @@ class _RondoState extends State<Rondo> {
     }
 
     return uniqueNumbers.toList();
+  }
+
+  void draw() {
+    setState(() {
+      questionsNumber++;
+      if (questionsNumber == 8) {
+        if (gameRedScore > gameBlueScore) {
+          redScore++;
+          Navigator.pop(context, [redScore, blueScore]);
+        } else if (gameRedScore < gameBlueScore) {
+          blueScore++;
+          Navigator.pop(context, [redScore, blueScore]);
+        } else {
+          redScore++;
+          blueScore++;
+          Navigator.pop(context, [redScore, blueScore]);
+        }
+      }
+    });
+  }
+
+  void changeQuestion() {
+    setState(() {
+      randomNumbers[questionsNumber] = random.nextInt(Rondo_data.length);
+    });
   }
 
   @override
@@ -147,7 +174,7 @@ class _RondoState extends State<Rondo> {
                     ],
                   ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 10),
                 Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
@@ -162,6 +189,16 @@ class _RondoState extends State<Rondo> {
                       style: TextStyle(fontSize: 40),
                     ),
                   ),
+                ),
+                Image(image: AssetImage("assets/main/img.png")),
+                SizedBox(height: 5,),
+                ElevatedButton(
+                  onPressed: changeQuestion,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.green,
+                  ),
+                  child: Text('Change the question'),
                 ),
 
               ],

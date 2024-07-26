@@ -163,7 +163,7 @@ class _PasswordState extends State<Password> {
                     ),
                   ),
                 ),
-
+                Image(image: AssetImage("assets/main/img.png")),
               ],
             )
         ),

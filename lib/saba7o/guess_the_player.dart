@@ -3,17 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../database/database.dart';
 
-class guessThePlayer extends StatefulWidget {
+class GuessThePlayer extends StatefulWidget {
   final int redScore;
   final int blueScore;
 
-  guessThePlayer({required this.redScore, required this.blueScore});
+  GuessThePlayer({required this.redScore, required this.blueScore});
 
   @override
-  State<guessThePlayer> createState() => _guessThePlayerState();
+  State<GuessThePlayer> createState() => _GuessThePlayerState();
 }
 
-class _guessThePlayerState extends State<guessThePlayer> {
+class _GuessThePlayerState extends State<GuessThePlayer> {
   late int redScore;
   late int blueScore;
   int gameBlueScore = 0;
@@ -22,12 +22,14 @@ class _guessThePlayerState extends State<guessThePlayer> {
   int clueNumber = 0;
   bool showName = false;
   Random random = Random();
+  late List<int> randomNumbers;
 
   @override
   void initState() {
     super.initState();
     redScore = widget.redScore;
     blueScore = widget.blueScore;
+    randomNumbers = generateUniqueRandomNumbers(3, guessThePlayer_data.length);
   }
 
   List<int> generateUniqueRandomNumbers(int count, int max) {
@@ -41,9 +43,36 @@ class _guessThePlayerState extends State<guessThePlayer> {
     return uniqueNumbers.toList();
   }
 
+  void draw() {
+    setState(() {
+      if (questionsNumber < 2) {
+        questionsNumber++;
+        clueNumber = 0;
+        showName = false;
+      } else {
+        if (gameRedScore > gameBlueScore) {
+          redScore++;
+        } else if (gameRedScore < gameBlueScore) {
+          blueScore++;
+        } else {
+          redScore++;
+          blueScore++;
+        }
+        Navigator.pop(context, [redScore, blueScore]);
+      }
+    });
+  }
+
+  void changeQuestion() {
+    setState(() {
+      randomNumbers[questionsNumber] = random.nextInt(guessThePlayer_data.length);
+      clueNumber = 0;
+      showName = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<int> randomNumbers = generateUniqueRandomNumbers(5, guessThePlayer_data.length);
     Map<String, String> currentPlayerData = guessThePlayer_data[randomNumbers[questionsNumber]];
 
     return Scaffold(
@@ -143,7 +172,6 @@ class _guessThePlayerState extends State<guessThePlayer> {
                   ],
                 ),
               ),
-              SizedBox(height: 30),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -177,29 +205,61 @@ class _guessThePlayerState extends State<guessThePlayer> {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        // Show the next clue
-                        if (clueNumber < 4) { // Adjust this based on the number of clues available
-                          clueNumber++;
-                        }
-                      });
-                    },
-                    child: Text('Show Next Clue'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            // Show the next clue
+                            if (clueNumber < 4) { // Adjust this based on the number of clues available
+                              clueNumber++;
+                            }
+                          });
+                        },style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.grey[700]
+                      ),
+                        child: Text('Show Next Clue'),
+                      ),
+                      SizedBox(width: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            // Toggle the visibility of the name
+                            showName = !showName;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Color(0xff14213d)
+                        ),
+                        child: Text(showName ? 'Hide Name' : 'Show Name'),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        // Toggle the visibility of the name
-                        showName = !showName;
-                      });
-                    },
-                    child: Text(showName ? 'Hide Name' : 'Show Name'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: draw,
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blueGrey,
+                        ),
+                        child: Text('No Answer'),
+                      ),
+                      ElevatedButton(
+                        onPressed: changeQuestion,
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.green,
+                        ),
+                        child: Text('Change the question'),
+                      ),
+                    ],
                   ),
                 ],
               ),
