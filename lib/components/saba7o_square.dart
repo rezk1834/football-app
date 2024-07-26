@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:football/database/database.dart';
+import 'package:football/saba7o/password.dart';
+import 'package:football/saba7o/rondo.dart';
+import 'package:football/saba7o/whisper.dart';
+import '../saba7o/acting.dart';
 import '../saba7o/ehdeb.dart';
 import '../saba7o/ekdeb.dart';
+import '../saba7o/guess_the_player.dart';
+import '../saba7o/labes_sa7bak.dart';
+import '../saba7o/mazad.dart';
+import '../saba7o/men_fe_elsora.dart';
+import '../saba7o/risk.dart';
+import '../saba7o/seconds.dart';
 
 class saba7o_square extends StatefulWidget {
   final String child;
@@ -32,9 +43,31 @@ class _saba7o_squareState extends State<saba7o_square> {
         builder: (context) {
           switch (widget.path) {
             case '/ehbed':
-              return ehbed(redScore: widget.red_score, blueScore: widget.blue_score);
+              return Ehbed(redScore: widget.red_score, blueScore: widget.blue_score);
             case '/ekdeb':
-              return ekdeb(redScore: widget.red_score, blueScore: widget.blue_score);
+              return Ekdeb(redScore: widget.red_score, blueScore: widget.blue_score);
+            case '/rondo':
+              return Rondo(redScore: widget.red_score, blueScore: widget.blue_score);
+            case '/acting':
+              return Acting(redScore: widget.red_score, blueScore: widget.blue_score);
+            case '/men_fe_elsora':
+              return Men_fe_elsora(redScore: widget.red_score, blueScore: widget.blue_score);
+            case '/whisper':
+              return Whisper(redScore: widget.red_score, blueScore: widget.blue_score);
+            case '/password':
+              return Password(redScore: widget.red_score, blueScore: widget.blue_score);
+            case '/guess_the_player':
+              return guessThePlayer(redScore: widget.red_score, blueScore: widget.blue_score);
+            case '/risk':
+              return Risk(redScore: widget.red_score, blueScore: widget.blue_score);
+            case '/labes_sa7bak':
+              return labesSa7bak(redScore: widget.red_score, blueScore: widget.blue_score);
+            case '/seconds':
+              return Seconds(redScore: widget.red_score, blueScore: widget.blue_score);
+            case '/mazad':
+              return Mazad(redScore: widget.red_score, blueScore: widget.blue_score);
+
+
             default:
               return Container(); // Placeholder for invalid path
           }

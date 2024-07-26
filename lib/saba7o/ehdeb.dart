@@ -3,17 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../database/database.dart';
 
-class ehbed extends StatefulWidget {
+class Ehbed extends StatefulWidget {
   final int redScore;
   final int blueScore;
 
-  ehbed({required this.redScore, required this.blueScore});
+  Ehbed({required this.redScore, required this.blueScore});
 
   @override
-  State<ehbed> createState() => _ehbedState();
+  State<Ehbed> createState() => _EhbedState();
 }
 
-class _ehbedState extends State<ehbed> {
+class _EhbedState extends State<Ehbed> {
   late int redScore;
   late int blueScore;
   int gameBlueScore = 0;
@@ -41,11 +41,11 @@ class _ehbedState extends State<ehbed> {
 
   @override
   Widget build(BuildContext context) {
-    List<int> randomNumbers = generateUniqueRandomNumbers(5, ehbed_data.length);
+    List<int> randomNumbers = generateUniqueRandomNumbers(5, Ehbed_data.length);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('ehbed Page'),
+        title: Text('Ehbed Page'),
       ),
       body: Container(
         width: double.infinity,
@@ -58,8 +58,7 @@ class _ehbedState extends State<ehbed> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: (questionsNumber < 5)
-              ? Column(
+          child:  Column(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -87,7 +86,12 @@ class _ehbedState extends State<ehbed> {
                           onPressed: () {
                             setState(() {
                               gameRedScore++;
-                              questionsNumber++;
+                              if (gameRedScore == 3) {
+                                redScore++;
+                                Navigator.pop(context, [redScore, blueScore]);
+                              } else {
+                                questionsNumber++;
+                              }
                             });
                           },
                         ),
@@ -118,8 +122,12 @@ class _ehbedState extends State<ehbed> {
                           onPressed: () {
                             setState(() {
                               gameBlueScore++;
-                              questionsNumber++;
-
+                              if (gameBlueScore == 3) {
+                                blueScore++;
+                                Navigator.pop(context, [redScore, blueScore]);
+                              } else {
+                                questionsNumber++;
+                              }
                             });
                           },
                         ),
@@ -139,7 +147,7 @@ class _ehbedState extends State<ehbed> {
                 margin: EdgeInsets.symmetric(vertical: 20),
                 child: Center(
                   child: Text(
-                    ehbed_data[randomNumbers[questionsNumber]]['question'] as String,
+                    Ehbed_data[randomNumbers[questionsNumber]]['question'] as String,
                     style: TextStyle(fontSize: 40),
                   ),
                 ),
@@ -153,44 +161,12 @@ class _ehbedState extends State<ehbed> {
                 padding: EdgeInsets.all(10),
                 margin: EdgeInsets.symmetric(vertical: 20),
                 child: Text(
-                  ehbed_data[randomNumbers[questionsNumber]]['answer'].toString(),
+                  Ehbed_data[randomNumbers[questionsNumber]]['answer'].toString(),
                   style: TextStyle(fontSize: 40, color: Colors.green),
                 ),
               ),
             ],
           )
-              : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 125,
-                child: FloatingActionButton(
-                  backgroundColor: Colors.red,
-                  onPressed: () {
-                    setState(() {
-                      redScore++;
-                    });
-                    Navigator.pop(context, [redScore, blueScore]);
-                  },
-                  child: Text('Team Red won', style: TextStyle(color: Colors.white, fontSize: 15)),
-                ),
-              ),
-              SizedBox(height: 20),
-              Container(
-                width: 125,
-                child: FloatingActionButton(
-                  backgroundColor: Colors.blue,
-                  onPressed: () {
-                    setState(() {
-                      blueScore++;
-                    });
-                    Navigator.pop(context, [redScore, blueScore]);
-                  },
-                  child: Text('Team Blue won', style: TextStyle(color: Colors.white, fontSize: 15)),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
