@@ -4,7 +4,8 @@
   import 'package:football/saba7o/rondo.dart';
   import 'package:football/saba7o/whisper.dart';
   import '../saba7o/acting.dart';
-  import '../saba7o/ehdeb.dart';
+  import '../saba7o/draw.dart';
+import '../saba7o/ehdeb.dart';
   import '../saba7o/ekdeb.dart';
   import '../saba7o/guess_the_player.dart';
   import '../saba7o/labes_sa7bak.dart';
@@ -67,6 +68,8 @@
                 return labesSa7bak(redScore: widget.red_score, blueScore: widget.blue_score);
               case '/seconds':
                 return Seconds(redScore: widget.red_score, blueScore: widget.blue_score);
+              case '/draw':
+                return Draw(redScore: widget.red_score, blueScore: widget.blue_score);
               case '/mazad':
                 return Mazad(redScore: widget.red_score, blueScore: widget.blue_score);
 
