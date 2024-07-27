@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../components/saba7o_square.dart';
+import '../components/scoreContainer.dart';
 import '../database/database.dart';
 
 class saba7o extends StatefulWidget {
@@ -37,24 +38,9 @@ class _saba7oState extends State<saba7o> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                      width: 75,
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Center(child: Text(red_score.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
-                  ),
-                  Container(
-                      width: 75,
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Center(child: Text(blue_score.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
-                  ),
+                  Text('  Score ', style: TextStyle(fontSize: 35),),
+                  scoreContainer(red_score.toString(), Colors.red),
+                  scoreContainer(blue_score.toString(), Colors.blue),
                 ],
               ),
             ),

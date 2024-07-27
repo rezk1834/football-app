@@ -20,66 +20,14 @@ class _EhbedState extends State<Ehbed> {
   int gameRedScore = 0;
   int questionsNumber = 0;
   Random random = Random();
+  late List<int> randomNumbers;
 
   @override
   void initState() {
     super.initState();
     redScore = widget.redScore;
     blueScore = widget.blueScore;
-  }
-
-  void correctAnswer() {
-    setState(() {
-
-    });
-  }
-
-  void draw() {
-    setState(() {
-      if (questionsNumber < 5) {
-        questionsNumber++;
-        gameRedScore++;
-        gameBlueScore++;
-      }
-      if (questionsNumber == 5) {
-        _checkGameEnd();
-      }
-    });
-  }
-
-  void reddouble() {
-    setState(() {
-      if (questionsNumber < 5) {
-        questionsNumber++;
-        gameRedScore += 2;
-      }
-      if (questionsNumber == 5) {
-        _checkGameEnd();
-      }
-    });
-  }
-
-  void bluedouble() {
-    setState(() {
-      if (questionsNumber < 5) {
-        questionsNumber++;
-        gameBlueScore += 2;
-      }
-      if (questionsNumber == 5) {
-        _checkGameEnd();
-      }
-    });
-  }
-
-  void _checkGameEnd() {
-    if (questionsNumber == 5) {
-      if (gameRedScore > gameBlueScore) {
-        redScore++;
-      } else if (gameRedScore < gameBlueScore) {
-        blueScore++;
-      }
-      Navigator.pop(context, [redScore, blueScore]);
-    }
+    randomNumbers = generateUniqueRandomNumbers(5, Acting_data.length);
   }
 
   List<int> generateUniqueRandomNumbers(int count, int max) {
@@ -93,6 +41,38 @@ class _EhbedState extends State<Ehbed> {
     return uniqueNumbers.toList();
   }
 
+  void draw() {
+    setState(() {
+      questionsNumber++;
+      _checkGameEnd();
+    });
+  }
+
+  void changeQuestion() {
+    setState(() {
+      _checkGameEnd();
+      randomNumbers[questionsNumber] = random.nextInt(Ehbed_data.length);
+    });
+  }
+
+  void _checkGameEnd() {
+    if (questionsNumber == 5) {
+      if (gameRedScore > gameBlueScore) {
+        redScore++;
+      } else if (gameRedScore < gameBlueScore) {
+        blueScore++;
+      }
+      Navigator.pop(context, [redScore, blueScore]);
+    }
+    if (gameBlueScore == 3) {
+      blueScore++;
+      Navigator.pop(context, [redScore, blueScore]);
+    }
+    if (gameRedScore == 3) {
+      redScore++;
+      Navigator.pop(context, [redScore, blueScore]);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     List<int> randomNumbers = generateUniqueRandomNumbers(5, Ehbed_data.length);
@@ -100,11 +80,11 @@ class _EhbedState extends State<Ehbed> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Ehbed Page'),
+        centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Expanded(
-          child: Column(
+          padding: const EdgeInsets.all(8.0),
+          child:  Column(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -131,13 +111,9 @@ class _EhbedState extends State<Ehbed> {
                           icon: Icon(Icons.add, color: Colors.red),
                           onPressed: () {
                             setState(() {
-                              if (questionsNumber < 5) {
-                                gameRedScore++;
-                                questionsNumber++;
-                              }
-                              if (questionsNumber == 5) {
-                                _checkGameEnd();
-                              }
+                              gameRedScore++;
+                              questionsNumber++;
+                              _checkGameEnd();
                             });
                           },
                         ),
@@ -167,13 +143,9 @@ class _EhbedState extends State<Ehbed> {
                           icon: Icon(Icons.add, color: Colors.blue),
                           onPressed: () {
                             setState(() {
-                              if (questionsNumber < 5) {
-                                gameBlueScore++;
-                                questionsNumber++;
-                              }
-                              if (questionsNumber == 5) {
-                                _checkGameEnd();
-                              }
+                              gameBlueScore++;
+                              questionsNumber++;
+                              _checkGameEnd();
                             });
                           },
                         ),
@@ -182,87 +154,58 @@ class _EhbedState extends State<Ehbed> {
                   ],
                 ),
               ),
-              if (questionsNumber < 5)
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  child: Center(
-                    child: Text(
-                      Ehbed_data[randomNumbers[questionsNumber]]['question'] as String,
-                      style: TextStyle(fontSize: 30),
-                    ),
-                  ),
+              SizedBox(height: 30),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-              if (questionsNumber < 5)
-                Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(vertical: 20),
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.symmetric(vertical: 20),
+                child: Center(
                   child: Text(
-                    Ehbed_data[randomNumbers[questionsNumber]]['answer'].toString(),
-                    style: TextStyle(fontSize: 40, color: Colors.green),
+                    Ehbed_data[randomNumbers[questionsNumber]]['question'] as String,
+                    style: TextStyle(fontSize: 40),
                   ),
                 ),
-
-              Column(
+              ),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  Ehbed_data[randomNumbers[questionsNumber]]['answer'].toString(),
+                  style: TextStyle(fontSize: 40, color: Colors.green),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: draw,
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.blueGrey,
-                        ),
-                        child: Text('Draw'),
-                      ),
-                      ElevatedButton(
-                        onPressed: correctAnswer,
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.green,
-                        ),
-                        child: Text('Change the question'),
-                      ),
-                    ],
+                  ElevatedButton(
+                    onPressed: draw,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blueGrey,
+                    ),
+                    child: Text('No Answer'),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: reddouble,
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.red,
-                        ),
-                        child: Text('Red double points'),
-                      ),
-                      ElevatedButton(
-                        onPressed: bluedouble,
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.blue,
-                        ),
-                        child: Text('Blue double points'),
-                      ),
-                    ],
+                  ElevatedButton(
+                    onPressed: changeQuestion,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.green,
+                    ),
+                    child: Text('Change the question'),
                   ),
                 ],
               ),
-
             ],
-          ),
-        ),
+          )
       ),
     );
   }
