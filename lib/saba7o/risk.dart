@@ -20,6 +20,7 @@ class _RiskState extends State<Risk> {
   int gameRedScore = 0;
   Random random = Random();
   late List<Map<String, String>> randomRiskData;
+  late List<List<Color>> containerColors;
 
   @override
   void initState() {
@@ -27,7 +28,7 @@ class _RiskState extends State<Risk> {
     redScore = widget.redScore;
     blueScore = widget.blueScore;
     randomRiskData = _getRandomRiskData(4);
-    print("Selected Risk data: $randomRiskData");
+    containerColors = List.generate(4, (index) => List.generate(4, (index) => Colors.green[600]!));
   }
 
   List<Map<String, String>> _getRandomRiskData(int count) {
@@ -36,25 +37,99 @@ class _RiskState extends State<Risk> {
     return shuffledData.take(count).toList();
   }
 
-  void _showDialog(String title, String content) {
+  void _showDialog(int columnIndex, int rowIndex, String question, String answer, String choices) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
-          content: Text(content),
+          title: Text(question),
+          content: Text(answer+'\n'+choices),
           actions: [
             TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              ),
               onPressed: () {
+                setState(() {
+                  containerColors[columnIndex][rowIndex] = Colors.red;
+                });
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: Text('Red'),
+            ),
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+              ),
+              onPressed: () {
+                setState(() {
+                  containerColors[columnIndex][rowIndex] = Colors.blue;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Blue'),
+            ),
+
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
+              ),
+              onPressed: () {
+                setState(() {
+                  containerColors[columnIndex][rowIndex] = Colors.grey;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Grey'),
             ),
           ],
         );
       },
     );
   }
+  void _endround() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('End Game'),
+          content: Text('Select the winning team:'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  redScore++;
+                });
+                Navigator.pop(context, [redScore, blueScore]);
+                Navigator.pop(context, [redScore, blueScore]);
+              },
+              child: Text(
+                'Team Red Wins',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  blueScore++;
+                });
+                Navigator.pop(context, [redScore, blueScore]);
+                Navigator.pop(context, [redScore, blueScore]);
+              },
+              child: Text(
+                'Team Blue Wins',
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +164,9 @@ class _RiskState extends State<Risk> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [5, 10, 20, 40].map((value) {
                   return ElevatedButton(
-                    onPressed: () => setState(() { gameRedScore += value; }),
+                    onPressed: () => setState(() {
+                      gameRedScore += value;
+                    }),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.red,
@@ -105,7 +182,9 @@ class _RiskState extends State<Risk> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [5, 10, 20, 40].map((value) {
                   return ElevatedButton(
-                    onPressed: () => setState(() { gameBlueScore += value; }),
+                    onPressed: () => setState(() {
+                      gameBlueScore += value;
+                    }),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.blue,
@@ -116,45 +195,57 @@ class _RiskState extends State<Risk> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: GridView.builder(
-                  itemCount: 16, // Total items in the grid (4 columns x 4 rows)
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                  ),
-                  itemBuilder: (context, index) {
-                    // Determine the point value based on the row
-                    final points = [5, 10, 20, 40];
-                    final row = index ~/ 4;
-                    final pointValue = points[row];
-
-                    return GestureDetector(
-                      onTap: () {
-                        // Show dialog with the relevant content
-                        if (index < randomRiskData.length) {
-                          final data = randomRiskData[index];
-                          final question = data['5q'] ?? '';
-                          final answer = data['5a'] ?? '';
-                          _showDialog(data['title'] ?? 'Question', 'Q: $question\nA: $answer');
-                        }
-                      },
-                      child: Container(
-                        color: Colors.grey[600],
-                        child: Center(
-                          child: Text(
-                            pointValue.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(4, (columnIndex) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          color: Colors.green[600],
+                          width: 60,
+                          height: 50,
+                          child: Center(child: Text(randomRiskData[columnIndex]["title"]!)),
                         ),
                       ),
-                    );
-                  },
-                ),
+                      ...[5, 10, 20, 40].asMap().entries.map((entry) {
+                        int rowIndex = entry.key;
+                        int value = entry.value;
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              _showDialog(
+                                columnIndex,
+                                rowIndex,
+                                randomRiskData[columnIndex]["${value}q"]!,
+                                randomRiskData[columnIndex]["${value}a"]!,
+                                randomRiskData[columnIndex]["${value}c"]!,
+                              );
+                            },
+                            child: Container(
+                              color: containerColors[columnIndex][rowIndex],
+                              width: 60,
+                              height: 50,
+                              child: Center(child: Text("$value")),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                  );
+                }),
               ),
             ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color(0xfffdca40),
+                ),
+                onPressed: _endround,
+                child: Text("End Round"))
           ],
         ),
       ),
