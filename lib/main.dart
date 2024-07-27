@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:football/round%2016/round.dart';
 import 'package:football/saba7o/saba7o.dart';
-
 import '30 challenge/challenge.dart';
 import 'aqua ta7ady/aqua.dart';
 import 'home_screen.dart';
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Football',
+      title: 'احنا بتوع الكورة',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -27,6 +27,8 @@ class MyApp extends StatelessWidget {
         '/saba7o': (context) => saba7o(),
         '/aqua': (context) => aqua(),
         '/challenge': (context) => challenge(),
+        '/round': (context) => round(),
+
       },
     );
   }
