@@ -15,23 +15,18 @@ class home_screen extends StatelessWidget {
         title: Text('اختار التحدي', style: TextStyle(fontSize: 40),),
         centerTitle: true,
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/main/wall.jpg"),fit:BoxFit.cover)
-        ),
-        child: ListView.builder(
-            itemCount: main_categories.length,
-            itemBuilder: (context,index ){
-              return main_square(
+      body: ListView.builder(
+          itemCount: main_categories.length,
+          itemBuilder: (context,index ){
+            return Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: main_square(
                 child: main_categories[index]['title']!,
                 pic: main_categories[index]['image']!,
                 path: main_categories[index]['path']!,
-              );
-            }),
-      ),
+              ),
+            );
+          }),
     );
   }
 }

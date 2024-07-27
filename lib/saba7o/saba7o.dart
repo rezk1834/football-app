@@ -28,62 +28,54 @@ class _saba7oState extends State<saba7o> {
         title: Text('صباحو تحدي', style: TextStyle(fontSize: 40),),
         centerTitle: true,
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/main/wall.jpg"),fit:BoxFit.cover)
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8,top: 20,right: 8,bottom: 8),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                        width: 75,
-                        height: 75,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Center(child: Text(red_score.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
-                    ),
-                    Container(
-                        width: 75,
-                        height: 75,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Center(child: Text(blue_score.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
-                    ),
-                  ],
-                ),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 8,top: 20,right: 8,bottom: 8),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      width: 75,
+                      height: 75,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Center(child: Text(red_score.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
+                  ),
+                  Container(
+                      width: 75,
+                      height: 75,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Center(child: Text(blue_score.toString(),style: TextStyle(color: Colors.white,fontSize: 40),),)
+                  ),
+                ],
               ),
-              SizedBox(height: 10,),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: saba7o_categories.length,
-                  itemBuilder: (context, index) {
-                    return saba7o_square(
-                      child: saba7o_categories[index]['title']!,
-                      pic: saba7o_categories[index]['image']!,
-                      red_score: red_score,
-                      blue_score: blue_score,
-                      path: saba7o_categories[index]['path']!,
-                      updateScores: updateScores,
+            ),
+            SizedBox(height: 10,),
+            Expanded(
+              child: ListView.builder(
+                itemCount: saba7o_categories.length,
+                itemBuilder: (context, index) {
+                  return saba7o_square(
+                    child: saba7o_categories[index]['title']!,
+                    pic: saba7o_categories[index]['image']!,
+                    red_score: red_score,
+                    blue_score: blue_score,
+                    path: saba7o_categories[index]['path']!,
+                    updateScores: updateScores,
 
-                    );
-                  },
-                ),
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

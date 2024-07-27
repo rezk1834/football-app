@@ -73,149 +73,139 @@ class _ActingState extends State<Acting> {
         title: Text('Acting Page'),
         centerTitle: true,
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/main/wall.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Center(
-                            child: Text(
-                              gameRedScore.toString(),
-                              style: TextStyle(color: Colors.white, fontSize: 25),
-                            ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Center(
+                          child: Text(
+                            gameRedScore.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
                         ),
-                        IconButton(
-                          icon: Icon(Icons.add, color: Colors.red),
-                          onPressed: () {
-                            setState(() {
-                              gameRedScore++;
-                              if (gameRedScore == 4 && gameBlueScore == 4) {
-                                redScore++;
-                                blueScore++;
-                                Navigator.pop(context, [redScore, blueScore]);
-                              }
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add, color: Colors.red),
+                        onPressed: () {
+                          setState(() {
+                            gameRedScore++;
+                            if (gameRedScore == 4 && gameBlueScore == 4) {
+                              redScore++;
+                              blueScore++;
+                              Navigator.pop(context, [redScore, blueScore]);
+                            }
 
-                              if (gameRedScore == 5) {
-                                redScore++;
-                                Navigator.pop(context, [redScore, blueScore]);
-                              } else {
-                                questionsNumber++;
-                              }
-                            });
-                          },
+                            if (gameRedScore == 5) {
+                              redScore++;
+                              Navigator.pop(context, [redScore, blueScore]);
+                            } else {
+                              questionsNumber++;
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Text(
+                    'Question No.${questionsNumber + 1}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(100),
                         ),
-                      ],
-                    ),
-                    Text(
-                      'Question No.${questionsNumber + 1}',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(100),
+                        child: Center(
+                          child: Text(
+                            gameBlueScore.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
-                          child: Center(
-                            child: Text(
-                              gameBlueScore.toString(),
-                              style: TextStyle(color: Colors.white, fontSize: 25),
-                            ),
-                          ),
                         ),
-                        IconButton(
-                          icon: Icon(Icons.add, color: Colors.blue),
-                          onPressed: () {
-                            setState(() {
-                              gameBlueScore++;
-                              if (gameRedScore == 4 && gameBlueScore == 4) {
-                                redScore++;
-                                blueScore++;
-                                Navigator.pop(context, [redScore, blueScore]);
-                              }
-                              if (gameBlueScore == 5) {
-                                blueScore++;
-                                Navigator.pop(context, [redScore, blueScore]);
-                              } else {
-                                questionsNumber++;
-                              }
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add, color: Colors.blue),
+                        onPressed: () {
+                          setState(() {
+                            gameBlueScore++;
+                            if (gameRedScore == 4 && gameBlueScore == 4) {
+                              redScore++;
+                              blueScore++;
+                              Navigator.pop(context, [redScore, blueScore]);
+                            }
+                            if (gameBlueScore == 5) {
+                              blueScore++;
+                              Navigator.pop(context, [redScore, blueScore]);
+                            } else {
+                              questionsNumber++;
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              SizedBox(height: 30),
-              Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      Acting_data[randomNumbers[questionsNumber]]['name'] as String,
-                      style: TextStyle(fontSize: 40),
-                    ),
-                    Image(image: AssetImage("assets/main/img.png")),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: draw,
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.blueGrey,
-                          ),
-                          child: Text('No Answer'),
-                        ),
-                        ElevatedButton(
-                          onPressed: changeQuestion,
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.green,
-                          ),
-                          child: Text('Change the question'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+            ),
+            SizedBox(height: 30),
+            Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(8),
               ),
-            ],
-          ),
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    Acting_data[randomNumbers[questionsNumber]]['name'] as String,
+                    style: TextStyle(fontSize: 40),
+                  ),
+                  Image(image: AssetImage("assets/main/img.png")),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: draw,
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blueGrey,
+                        ),
+                        child: Text('No Answer'),
+                      ),
+                      ElevatedButton(
+                        onPressed: changeQuestion,
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.green,
+                        ),
+                        child: Text('Change the question'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

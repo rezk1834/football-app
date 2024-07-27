@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../components/scoreContainer.dart';
 import '../database/database.dart';
 
 class Risk extends StatefulWidget {
@@ -137,135 +138,122 @@ class _RiskState extends State<Risk> {
       appBar: AppBar(
         title: Text('Risk Page'),
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/main/wall.jpg"),
-            fit: BoxFit.cover,
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22, 10, 20,0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                scoreContainer(gameRedScore.toString(), Colors.red),
+                scoreContainer(gameBlueScore.toString(), Colors.blue),
+              ],
+            ),
           ),
-        ),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _scoreContainer(gameRedScore.toString(), Colors.red),
-                  _scoreContainer(gameBlueScore.toString(), Colors.blue),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [5, 10, 20, 40].map((value) {
+                return ElevatedButton(
+                  onPressed: () =>
+                      setState(() {
+                        gameRedScore += value;
+                      }),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.red,
+                  ),
+                  child: Text("+$value"),
+                );
+              }).toList(),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [5, 10, 20, 40].map((value) {
-                  return ElevatedButton(
-                    onPressed: () => setState(() {
-                      gameRedScore += value;
-                    }),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.red,
-                    ),
-                    child: Text("+$value"),
-                  );
-                }).toList(),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [5, 10, 20, 40].map((value) {
+                return ElevatedButton(
+                  onPressed: () =>
+                      setState(() {
+                        gameBlueScore += value;
+                      }),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue,
+                  ),
+                  child: Text("+$value"),
+                );
+              }).toList(),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [5, 10, 20, 40].map((value) {
-                  return ElevatedButton(
-                    onPressed: () => setState(() {
-                      gameBlueScore += value;
-                    }),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blue,
-                    ),
-                    child: Text("+$value"),
-                  );
-                }).toList(),
-              ),
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(4, (columnIndex) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          color: Colors.green[600],
-                          width: 60,
-                          height: 50,
-                          child: Center(child: Text(randomRiskData[columnIndex]["title"]!)),
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(4, (columnIndex) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[400],
+                          borderRadius: BorderRadius.circular(12)
                         ),
+                        width: 60,
+                        height: 75,
+                        child: Center(child: Text(
+                          randomRiskData[columnIndex]["title"]!,
+                          style: TextStyle(
+                              fontSize: 16, color: Colors.white),)),
                       ),
-                      ...[5, 10, 20, 40].asMap().entries.map((entry) {
-                        int rowIndex = entry.key;
-                        int value = entry.value;
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              _showDialog(
-                                columnIndex,
-                                rowIndex,
-                                randomRiskData[columnIndex]["${value}q"]!,
-                                randomRiskData[columnIndex]["${value}a"]!,
-                                randomRiskData[columnIndex]["${value}c"]!,
-                              );
-                            },
-                            child: Container(
-                              color: containerColors[columnIndex][rowIndex],
-                              width: 60,
-                              height: 50,
-                              child: Center(child: Text("$value")),
+                    ),
+                    ...[5, 10, 20, 40]
+                        .asMap()
+                        .entries
+                        .map((entry) {
+                      int rowIndex = entry.key;
+                      int value = entry.value;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 8),
+                        child: GestureDetector(
+                          onTap: () {
+                            _showDialog(
+                              columnIndex,
+                              rowIndex,
+                              randomRiskData[columnIndex]["${value}q"]!,
+                              randomRiskData[columnIndex]["${value}a"]!,
+                              randomRiskData[columnIndex]["${value}c"]!,
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: containerColors[columnIndex][rowIndex],
+                                borderRadius: BorderRadius.circular(12)
                             ),
-                          ),
-                        );
-                      }).toList(),
-                    ],
-                  );
-                }),
-              ),
-            ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Color(0xfffdca40),
-                ),
-                onPressed: _endround,
-                child: Text("End Round"))
-          ],
-        ),
-      ),
-    );
-  }
 
-  Widget _scoreContainer(String title, Color color) {
-    return Container(
-      width: 70,
-      height: 40,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: Center(
-        child: Text(
-          title,
-          style: TextStyle(color: Colors.white, fontSize: 14),
-          textAlign: TextAlign.center,
-        ),
+                            width: 60,
+                            height: 50,
+                            child: Center(child: Text("$value")),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                );
+              }),
+            ),
+          ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Color(0xfffdca40),
+              ),
+              onPressed: _endround,
+              child: Text("End Round"))
+        ],
       ),
     );
   }

@@ -113,52 +113,42 @@ class _labesSa7bakState extends State<labesSa7bak> {
       appBar: AppBar(
         title: Text('labesSa7bak Page'),
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/main/wall.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    buildScoreColumn(Colors.red, gameRedScore, () => updateScores(1)),
-                    Text(
-                      'Question No.${questionsNumber + 1}',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    buildScoreColumn(Colors.blue, gameBlueScore, () => updateScores(2)),
-                  ],
-                ),
-              ),
-              SizedBox(height: 30),
-              Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.symmetric(vertical: 20),
-                child: Center(
-                  child: Text(
-                    labesSa7bak_data[randomNumbers[questionsNumber]]['question'] as String,
-                    style: TextStyle(fontSize: 40),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  buildScoreColumn(Colors.red, gameRedScore, () => updateScores(1)),
+                  Text(
+                    'Question No.${questionsNumber + 1}',
+                    style: TextStyle(fontSize: 20),
                   ),
+                  buildScoreColumn(Colors.blue, gameBlueScore, () => updateScores(2)),
+                ],
+              ),
+            ),
+            SizedBox(height: 30),
+            Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(vertical: 20),
+              child: Center(
+                child: Text(
+                  labesSa7bak_data[randomNumbers[questionsNumber]]['question'] as String,
+                  style: TextStyle(fontSize: 40),
                 ),
               ),
-              CountdownTimer(key: timerKey, seconds: 30),
-            ],
-          ),
+            ),
+            CountdownTimer(key: timerKey, seconds: 30),
+          ],
         ),
       ),
     );
