@@ -79,8 +79,10 @@ class _BankPageState extends State<BankPage> {
       ),
       body: questionsNumber<12? Stack(
         children: [
+
           Column(
             children: [
+              SizedBox(height: 5,),
               CountdownTimer(key: timerKey, seconds: 120),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

@@ -21,6 +21,7 @@ class _Men_fe_elsoraState extends State<Men_fe_elsora> {
   int questionsNumber = 0;
   Random random = Random();
   late List<int> randomNumbers;
+  ValueNotifier<bool> showNotifier = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -65,6 +66,10 @@ class _Men_fe_elsoraState extends State<Men_fe_elsora> {
       Navigator.pop(context); // Close the alert dialog
       Navigator.pop(context, [redScore, blueScore]); // Navigate back
     });
+  }
+
+  void toggleAnswer() {
+    showNotifier.value = !showNotifier.value;
   }
 
   @override
@@ -173,11 +178,32 @@ class _Men_fe_elsoraState extends State<Men_fe_elsora> {
                         fit: BoxFit.cover,
                       ),
                       SizedBox(height: 20),
-                      for (int i = 1; i <= 11; i++)
-                        Text(
-                          Men_fe_elsora_data[randomNumbers[questionsNumber]]['player$i'] as String,
-                          style: TextStyle(fontSize: 15),
-                        ),
+                      ValueListenableBuilder<bool>(
+                        valueListenable: showNotifier,
+                        builder: (context, show, child) {
+                          return Column(
+                            children: [
+                              for (int i = 1; i <= 11; i++)
+                                Text(
+                                  show
+                                      ? Men_fe_elsora_data[randomNumbers[questionsNumber]]
+                                  ['player$i']
+                                  as String
+                                      : "",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ElevatedButton(
+                                onPressed: toggleAnswer,
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                  backgroundColor: Color(0xfffdca40),
+                                ),
+                                child: Text(show ? 'Hide Answer' : 'Show Answer'),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

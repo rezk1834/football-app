@@ -48,14 +48,31 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
   @override
   Widget build(BuildContext context) {
+    double progress = _remainingSeconds / widget.seconds;
+
     return Container(
       alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            _remainingSeconds.toString(),
-            style: TextStyle(fontSize: 30, color: Colors.black),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                height: 100,
+                width: 100,
+                child: CircularProgressIndicator(
+                  value: progress,
+                  strokeWidth: 8,
+                  backgroundColor: Colors.grey[300],
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
+              ),
+              Text(
+                _remainingSeconds.toString(),
+                style: TextStyle(fontSize: 30, color: Colors.black),
+              ),
+            ],
           ),
           SizedBox(height: 10),
           Row(

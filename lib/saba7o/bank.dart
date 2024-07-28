@@ -102,6 +102,7 @@ class _BankState extends State<Bank> {
       ),
       body: Stack(
         children: [
+          SizedBox(height: 5,),
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Row(

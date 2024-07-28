@@ -20,6 +20,7 @@ class _EkdebState extends State<Ekdeb> {
   int gameRedScore = 0;
   int questionsNumber = 0;
   Random random = Random();
+  ValueNotifier<bool> showAnswerNotifier = ValueNotifier<bool>(false);
   late List<int> randomNumbers;
 
   @override
@@ -55,12 +56,16 @@ class _EkdebState extends State<Ekdeb> {
     });
   }
 
+  void toggleAnswer() {
+    showAnswerNotifier.value = !showAnswerNotifier.value;
+  }
+
   void _showWinnerDialog(String winningTeam) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: winningTeam== 'Blue Team'? Colors.blue:Colors.red,
+          backgroundColor: winningTeam == 'Blue Team' ? Colors.blue : Colors.red,
           content: Text(
             winningTeam == 'Draw' ? '$winningTeam!' : '$winningTeam wins!',
             style: TextStyle(color: Colors.white, fontSize: 25),
@@ -93,7 +98,8 @@ class _EkdebState extends State<Ekdeb> {
   Widget build(BuildContext context) {
     List<int> randomNumbers = generateUniqueRandomNumbers(5, Ekdeb_data.length);
 
-    return questionsNumber<5?Scaffold(
+    return questionsNumber < 5
+        ? Scaffold(
       appBar: AppBar(
         title: Text('Ekdeb Page'),
         centerTitle: true,
@@ -119,7 +125,8 @@ class _EkdebState extends State<Ekdeb> {
                         child: Center(
                           child: Text(
                             gameRedScore.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 25),
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 25),
                           ),
                         ),
                       ),
@@ -151,7 +158,8 @@ class _EkdebState extends State<Ekdeb> {
                         child: Center(
                           child: Text(
                             gameBlueScore.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 25),
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 25),
                           ),
                         ),
                       ),
@@ -181,23 +189,34 @@ class _EkdebState extends State<Ekdeb> {
               margin: EdgeInsets.symmetric(vertical: 20),
               child: Center(
                 child: Text(
-                  Ekdeb_data[randomNumbers[questionsNumber]]['question'] as String,
+                  Ekdeb_data[randomNumbers[questionsNumber]]
+                  ['question'] as String,
                   style: TextStyle(fontSize: 40),
                 ),
               ),
             ),
-            Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.7),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(vertical: 20),
-              child: Text(
-                Ekdeb_data[randomNumbers[questionsNumber]]['answer'].toString(),
-                style: TextStyle(fontSize: 40, color: Colors.green),
-              ),
+            ValueListenableBuilder<bool>(
+              valueListenable: showAnswerNotifier,
+              builder: (context, showAnswer, child) {
+                return Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(vertical: 20),
+                  child: showAnswer
+                      ? Text(
+                    Ekdeb_data[randomNumbers[questionsNumber]]
+                    ['answer']
+                        .toString(),
+                    style:
+                    TextStyle(fontSize: 40, color: Colors.green),
+                  )
+                      : Text(""),
+                );
+              },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -220,9 +239,25 @@ class _EkdebState extends State<Ekdeb> {
                 ),
               ],
             ),
+            ElevatedButton(
+              onPressed: toggleAnswer,
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Color(0xfffdca40),
+              ),
+              child: ValueListenableBuilder<bool>(
+                valueListenable: showAnswerNotifier,
+                builder: (context, showAnswer, child) {
+                  return Text(showAnswer ? 'Hide Answer' : 'Show Answer');
+                },
+              ),
+            ),
           ],
         ),
       ),
-    ): Container( color: Colors.white,);
+    )
+        : Container(
+      color: Colors.white,
+    );
   }
 }
